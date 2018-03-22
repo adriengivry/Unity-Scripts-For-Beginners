@@ -39,7 +39,6 @@ public class DayAndNightCycle : MonoBehaviour
 
     private void Start()
     {
-        // Here we will set the time of the day in function of the preset entered in inspector
         switch (m_startingDayTime)
         {
             case DayTime.EARLYMORNING:
@@ -76,9 +75,6 @@ public class DayAndNightCycle : MonoBehaviour
         }
     }
 
-    /*
-     * This method can be used to convert daytime to rotation in degrees (Ex: 12AM = 90�)
-     */
     private float ConvertDaytimeToRotation(float p_daytime)
     {
         float rotation = m_daytime / 24.0f;
