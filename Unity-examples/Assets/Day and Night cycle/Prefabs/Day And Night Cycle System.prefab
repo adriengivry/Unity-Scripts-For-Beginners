@@ -34,7 +34,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1689596740207072}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.6365644, y: -1.7394643, z: 2.233222}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5737dc9e596604b835d1ab0bcaeae1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_directionalLightPrefab: {fileID: 0}
-  m_startingDayTime: 0
-  m_hoursPerSeconds: 0
+  m_directionalLights: {fileID: 0}
+  m_startingDayTime: 3
+  m_hoursPerSeconds: 1
+  m_daytime: 0
