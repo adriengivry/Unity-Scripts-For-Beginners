@@ -4,4 +4,7 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/First Person Camera/Scenes/Demo.unity
+    guid: ebaac3c926cc87d4eb2d9b732e095c94
