@@ -4,7 +4,7 @@ This repository aim to give beginners some examples of scripts that they can fre
 ## What kind of script will you find in this repository ?
 - Day and night cycle
 - Entity spawner
-- First Person Controller (WIP)
+- First Person Controller
 
 ## Technical informations
 
