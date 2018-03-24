@@ -400,30 +400,13 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_movementSpeed
-      value: 3
+    - target: {fileID: 1353510569841908, guid: 1b4f395f35e382d49b444696391aee91, type: 2}
+      propertyPath: m_Name
+      value: Character
       objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_forwardKey
-      value: 119
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_backwardKey
-      value: 115
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_rightKey
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_leftKey
-      value: 97
+    - target: {fileID: 1261017588049026, guid: 1b4f395f35e382d49b444696391aee91, type: 2}
+      propertyPath: m_Name
+      value: Camera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1b4f395f35e382d49b444696391aee91, type: 2}

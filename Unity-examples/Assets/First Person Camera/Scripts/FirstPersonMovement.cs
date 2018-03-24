@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
- * Here is a simple first person camera that helps you to move into your level with colliders
+ * Here is a simple first person movement controller that helps you to move into your level.
+ * You must add this script on your first person character
  */ 
 public class FirstPersonMovement : MonoBehaviour
 {

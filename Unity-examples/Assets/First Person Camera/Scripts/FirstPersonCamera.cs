@@ -3,39 +3,63 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
- * Here is a simple first person camera that helps you to move into your level with colliders
+ * A simple first person camera allowing you to look everywhere on your scene
+ * You have to place this script on the camera associated to your first person character (The camera must be a child).
  */ 
 public class FirstPersonCamera : MonoBehaviour
 {
     [Header("CAMERA PARAMETERS")]
-    [SerializeField] private float m_cameraHorizontalSpeed = 2.0f;
-    [SerializeField] private float m_cameraVerticalSpeed = 2.0f;
+    [SerializeField] public float m_mouseSensitivity = 5.0f;
+    [SerializeField] public float m_smoothing = 2.0f;
 
-    private Rigidbody m_rigidbody;
+    private Vector2 m_mouseLook;
+    private Vector2 m_verticalSmooth;
 
-    private float m_yaw;
-    private float m_pitch;
+    private void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+    }
     
+    /*
+     * Some maths to calculate the mouseLook direction
+     */ 
+    private void UpdateMouseLook()
+    {
+        Vector2 mouseMove = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+        mouseMove = Vector2.Scale(mouseMove, new Vector2(m_mouseSensitivity * m_smoothing, m_mouseSensitivity * m_smoothing));
+
+        m_verticalSmooth.x = Mathf.Lerp(m_verticalSmooth.x, mouseMove.x, 1.0f / m_smoothing);
+        m_verticalSmooth.y = Mathf.Lerp(m_verticalSmooth.y, mouseMove.y, 1.0f / m_smoothing);
+
+        m_mouseLook += m_verticalSmooth;
+        m_mouseLook.y = Mathf.Clamp(m_mouseLook.y, -90.0f, 90.0f);
+    }
 
     private void Start()
     {
-        m_rigidbody = GetComponent<Rigidbody>();
-        if (m_rigidbody)
-            m_rigidbody.freezeRotation = true;
-
-        Cursor.lockState = CursorLockMode.Locked;
-
-        m_yaw = 0.0f;
-        m_pitch = 0.0f;
+        LockCursor();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-            Cursor.lockState = CursorLockMode.None;
+            UnlockCursor();
 
-        m_yaw += m_cameraHorizontalSpeed * Input.GetAxisRaw("Mouse X");
-        m_pitch -= m_cameraVerticalSpeed * Input.GetAxisRaw("Mouse Y");
-        transform.eulerAngles = new Vector3(m_pitch, m_yaw, 0.0f);
+        UpdateMouseLook();
+
+        // Set the up/down rotation of the camera in function of the mouseLook variable
+        transform.localRotation = Quaternion.AngleAxis(-m_mouseLook.y, Vector3.right);
+
+        /*
+         * Set the left/right rotation on the parent of the camera in function of the mouseLook variable.
+         * We modify the parent instead of the camera gameObject in order to modify the forward vector of the gameObject.
+         * This way, when you'll press the forward key, you'll move in the mouseLook direction
+         */
+        transform.parent.localRotation = Quaternion.AngleAxis(m_mouseLook.x, transform.parent.up);
     }
 }
