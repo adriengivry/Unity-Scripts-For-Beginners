@@ -14,6 +14,7 @@ public class FirstPersonCamera : MonoBehaviour
 
     private Vector2 m_mouseLook;
     private Vector2 m_verticalSmooth;
+    private Quaternion m_parentInitialRotation;
 
     private void LockCursor()
     {
@@ -43,6 +44,8 @@ public class FirstPersonCamera : MonoBehaviour
     private void Start()
     {
         LockCursor();
+
+        m_parentInitialRotation = transform.parent.rotation;
     }
 
     private void Update()
@@ -60,6 +63,6 @@ public class FirstPersonCamera : MonoBehaviour
          * We modify the parent instead of the camera gameObject in order to modify the forward vector of the gameObject.
          * This way, when you'll press the forward key, you'll move in the mouseLook direction
          */
-        transform.parent.localRotation = Quaternion.AngleAxis(m_mouseLook.x, transform.parent.up);
+        transform.parent.rotation = m_parentInitialRotation * Quaternion.AngleAxis(m_mouseLook.x, transform.parent.up);
     }
 }
