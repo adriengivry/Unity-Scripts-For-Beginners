@@ -12,14 +12,6 @@ using UnityEditor;
  */
 public class FirstPersonMovement : MonoBehaviour
 {
-    private struct Inputs
-    {
-        public bool moveForward;
-        public bool moveBackward;
-        public bool moveRight;
-        public bool moveLeft;
-    }
-
     private enum MovementMode
     {
         NORMAL,
@@ -43,18 +35,12 @@ public class FirstPersonMovement : MonoBehaviour
     [SerializeField] private KeyCode m_customDownKey;
 
     private Rigidbody m_rigidbody;
-    private Inputs m_inputs;
 
     private void Start()
     {
         m_rigidbody = GetComponent<Rigidbody>();
         if (m_rigidbody)
             m_rigidbody.freezeRotation = true;
-
-        m_inputs.moveForward = false;
-        m_inputs.moveBackward = false;
-        m_inputs.moveRight = false;
-        m_inputs.moveLeft = false;
 
         if (m_movementMode == MovementMode.FLYING)
         {
