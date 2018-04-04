@@ -145,10 +145,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_movementSpeed: 3
-  m_forwardKey: 119
-  m_backwardKey: 115
-  m_rightKey: 100
-  m_leftKey: 97
+  m_movementMode: 0
+  m_useCustomInputs: 0
+  m_customForwardKey: 119
+  m_customBackwardKey: 115
+  m_customRightKey: 100
+  m_customLeftKey: 97
+  m_useFlyingModeCustomInputs: 1
+  m_customUpKey: 101
+  m_customDownKey: 97
 --- !u!114 &114960998131150402
 MonoBehaviour:
   m_ObjectHideFlags: 1
