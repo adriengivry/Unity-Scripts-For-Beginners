@@ -31,7 +31,7 @@ public class FirstPersonCamera : MonoBehaviour
      */ 
     private void UpdateMouseLook()
     {
-        Vector2 mouseMove = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+        Vector2 mouseMove = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         mouseMove = Vector2.Scale(mouseMove, new Vector2(m_mouseSensitivity * m_smoothing, m_mouseSensitivity * m_smoothing));
 
         m_verticalSmooth.x = Mathf.Lerp(m_verticalSmooth.x, mouseMove.x, 1.0f / m_smoothing);
