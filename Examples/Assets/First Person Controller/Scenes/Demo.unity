@@ -400,66 +400,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_useCustomInputs
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_customForwardKey
-      value: 119
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_customBackwardKey
-      value: 115
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_customRightKey
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_customLeftKey
-      value: 97
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_customJumpKey
-      value: 32
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_allowJump
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_jumpStrength
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_movementMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_customUpKey
-      value: 101
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_customDownKey
-      value: 113
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823411972500582, guid: 1b4f395f35e382d49b444696391aee91,
-        type: 2}
-      propertyPath: m_useFlyingModeCustomInputs
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1b4f395f35e382d49b444696391aee91, type: 2}
   m_IsPrefabParent: 0

@@ -19,20 +19,14 @@ public class FirstPersonMovement : MonoBehaviour
     }
 
     [Header("MOVEMENT PARAMETERS")]
-    [SerializeField] private float m_movementSpeed;
     [SerializeField] private MovementMode m_movementMode;
+    [SerializeField] private float m_movementSpeed;
+    [SerializeField] private float m_smoothing;
 
-    [Header("MOVEMENT KEYS")]
-    [SerializeField] private bool m_useCustomInputs;
-    [SerializeField] private KeyCode m_customForwardKey;
-    [SerializeField] private KeyCode m_customBackwardKey;
-    [SerializeField] private KeyCode m_customRightKey;
-    [SerializeField] private KeyCode m_customLeftKey;
-
-    [Header("MOVEMENT KEYS (FLYING MODE ONLY)")]
-    [SerializeField] private bool m_useFlyingModeCustomInputs;
-    [SerializeField] private KeyCode m_customUpKey;
-    [SerializeField] private KeyCode m_customDownKey;
+    [Header("INPUT BINDING")]
+    [SerializeField] private string m_verticalAxisInput;
+    [SerializeField] private string m_horizontalAxisInput;
+    [SerializeField] private string m_upAxisInput;
 
     private Rigidbody m_rigidbody;
 
@@ -48,84 +42,21 @@ public class FirstPersonMovement : MonoBehaviour
         }
     }
 
-    private float GetVerticalMove()
-    {
-        float vertical = 0.0f;
-
-        if (m_useCustomInputs)
-        {
-            vertical += System.Convert.ToSingle(Input.GetKey(m_customForwardKey));
-            vertical -= System.Convert.ToSingle(Input.GetKey(m_customBackwardKey));
-        }
-        else
-        {
-            vertical = Input.GetAxisRaw("Vertical");
-        }
-
-        return vertical;
-    }
-
-    private float GetHorizontalMove()
-    {
-        float horizontal = 0.0f;
-
-        if (m_useCustomInputs)
-        {
-            horizontal += System.Convert.ToSingle(Input.GetKey(m_customRightKey));
-            horizontal -= System.Convert.ToSingle(Input.GetKey(m_customLeftKey));
-        }
-        else
-        {
-            horizontal = Input.GetAxisRaw("Horizontal");
-        }
-
-        return horizontal;
-    }
-
-    private float GetUpMode()
-    {
-        float up = 0.0f;
-
-        if (m_useFlyingModeCustomInputs)
-        {
-            up += System.Convert.ToSingle(Input.GetKey(m_customUpKey));
-            up -= System.Convert.ToSingle(Input.GetKey(m_customDownKey));
-        }
-        else
-        {
-            try
-            {
-                up = Input.GetAxisRaw("Up");
-            }
-            catch
-            {
-                string error = "\"Up\" axis not found. Use custom mode or setup Unity Inputs";
-                Debug.LogError(error);
-            }
-        }
-
-        return up;
-    }
-
     private void Update()
     {
         Vector3 movement = new Vector3();
-        movement += Camera.main.transform.forward * GetVerticalMove();
-        movement += Camera.main.transform.right * GetHorizontalMove();
+        movement += Camera.main.transform.forward * Input.GetAxisRaw(m_verticalAxisInput);
+        movement += Camera.main.transform.right * Input.GetAxisRaw(m_horizontalAxisInput);
 
         if (m_movementMode == MovementMode.NORMAL)
-        {
             movement.y = m_rigidbody.velocity.y;
-        }
 
         if (m_movementMode == MovementMode.FLYING)
-        {
-            movement += Camera.main.transform.up * GetUpMode();
-        }
+            movement += Camera.main.transform.up * Input.GetAxisRaw(m_upAxisInput);
 
         movement.Normalize();
         movement *= m_movementSpeed;
 
-        m_rigidbody.velocity = movement;
+        m_rigidbody.velocity = Vector3.Lerp(m_rigidbody.velocity, movement, m_smoothing * Time.deltaTime);
     }
 }

@@ -9,8 +9,8 @@ using UnityEngine;
 public class FirstPersonCamera : MonoBehaviour
 {
     [Header("CAMERA PARAMETERS")]
-    [SerializeField] public float m_mouseSensitivity = 5.0f;
-    [SerializeField] public float m_smoothing = 2.0f;
+    [SerializeField] public float m_mouseSensitivity;
+    [SerializeField] public float m_smoothing;
 
     private Vector2 m_mouseLook;
     private Vector2 m_verticalSmooth;
