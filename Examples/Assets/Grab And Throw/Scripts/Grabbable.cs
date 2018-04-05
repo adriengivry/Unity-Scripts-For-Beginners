@@ -45,7 +45,8 @@ public class Grabbable : MonoBehaviour
 
     public void Throw(float p_strength)
     {
-        m_rigidbody.AddForce(Camera.main.transform.forward * p_strength);
+        if (m_throwable)
+            m_rigidbody.AddForce(Camera.main.transform.forward * p_strength);
     }
 
     public float CalculateDistanceToCameraOffset()
