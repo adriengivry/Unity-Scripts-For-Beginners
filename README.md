@@ -7,6 +7,8 @@ This repository aim to give beginners some examples of scripts that they can fre
 - First Person Controller
 - Grab And Throw system
 - Drag And Drop system
+- Door System
+- Head-Up Display using Unity events
 
 ## Technical informations
 - Unity version of the project : 2017.4.0f1

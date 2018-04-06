@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /*
  * Essential script to put on a GameObject of the scene where you want to enable drag and drop system
  */ 
-public class DragAndDropManager : MonoBehaviour {
+public class DragAndDropManager : MonoBehaviour
+{
+    public static UnityEvent CanDragEvent = new UnityEvent();
+    public static UnityEvent CannotDragEvent = new UnityEvent();
+    public static UnityEvent DragEvent = new UnityEvent();
+    public static UnityEvent DropEvent = new UnityEvent();
 
     [Header("INPUT BINDING")]
     [SerializeField] private string m_dragInput;
@@ -18,16 +24,14 @@ public class DragAndDropManager : MonoBehaviour {
 
     private void Update()
     {
-        if (Input.GetButtonDown(m_dragInput) && m_draggedObject == null)
+        if (m_draggedObject == null)
         {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, m_maximumDistanceFromCameraToObject))
+            Draggable target;
+            if (CheckIfCanDrag(out target))
             {
-                var target = hit.transform.GetComponent<Draggable>();
-
-                if (target != null)
+                if (Input.GetButtonDown(m_dragInput))
                 {
+                    DragEvent.Invoke();
                     target.Drag();
                     m_draggedObject = target;
                 }
@@ -36,8 +40,31 @@ public class DragAndDropManager : MonoBehaviour {
 
         if (Input.GetButtonUp(m_dropInput) && m_draggedObject != null)
         {
+            DropEvent.Invoke();
             m_draggedObject.Drop();
             m_draggedObject = null;
         }
+    }
+
+    private bool CheckIfCanDrag(out Draggable p_target)
+    {
+        p_target = null;
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit, m_maximumDistanceFromCameraToObject))
+        {
+            var target = hit.transform.GetComponent<Draggable>();
+
+            if (target != null)
+            {
+                CanDragEvent.Invoke();
+                p_target = target;
+                return true;
+            }
+        }
+
+        CannotDragEvent.Invoke();
+        return false;
     }
 }

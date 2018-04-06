@@ -1,12 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /*
  * A script to put on a Player to allow him to grab and throw objects (First person needed)
- */ 
+ */
 public class Grabber : MonoBehaviour
 {
+    public static UnityEvent CanGrabEvent = new UnityEvent();
+    public static UnityEvent CannotGrabEvent = new UnityEvent();
+    public static UnityEvent GrabEvent = new UnityEvent();
+    public static UnityEvent DropEvent = new UnityEvent();
+    public static UnityEvent ThrowEvent = new UnityEvent();
+
     [Header("INPUT BINDING")]
     [SerializeField] private string m_grabInput;
     [SerializeField] private string m_dropInput;
@@ -33,8 +40,10 @@ public class Grabber : MonoBehaviour
     {
         if (m_grabbedObject == null)
         {
-            if (Input.GetButtonDown(m_grabInput))
-                GrabObject();
+            GameObject toGrab;
+            if (CheckIfCanGrab(out toGrab))
+                if (Input.GetButtonDown(m_grabInput))
+                    GrabObject(toGrab);
         }
         else
         {
@@ -58,8 +67,20 @@ public class Grabber : MonoBehaviour
         m_grabbedObject.transform.rotation = Quaternion.Slerp(currentRotation, targetedRotation, m_objectRotationSmoothing);
     }
 
-    private void GrabObject()
+    private void GrabObject(GameObject p_toGrab)
     {
+        GrabEvent.Invoke();
+        m_grabbedObject = p_toGrab;
+        m_grabbedObjectScript = m_grabbedObject.GetComponent<Grabbable>();
+
+        m_grabbedObjectScript.Grab(gameObject);
+        m_distanceBetweenObjectAndCameraDueToMeshSize = m_grabbedObjectScript.CalculateDistanceToCameraOffset();
+    }
+
+    private bool CheckIfCanGrab(out GameObject p_grabbableFound)
+    {
+        p_grabbableFound = null;
+
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -69,17 +90,27 @@ public class Grabber : MonoBehaviour
             Grabbable grabbedObjectScript = gameObjectHit.GetComponent<Grabbable>();
             if (grabbedObjectScript != null && hit.distance <= m_minimumDistanceToGrab)
             {
-                m_grabbedObject = gameObjectHit;
-                m_grabbedObjectScript = grabbedObjectScript;
-
-                m_grabbedObjectScript.Grab(gameObject);
-                m_distanceBetweenObjectAndCameraDueToMeshSize = m_grabbedObjectScript.CalculateDistanceToCameraOffset();
+                p_grabbableFound = gameObjectHit;
             }
         }
+
+        if (p_grabbableFound != null)
+        {
+            CanGrabEvent.Invoke();
+            return true;
+        }
+
+        CannotGrabEvent.Invoke();
+        return false;
     }
 
     private void ThrowObject(float p_strength)
     {
+        if (p_strength > 0)
+            ThrowEvent.Invoke();
+        else
+            DropEvent.Invoke();
+
         m_grabbedObjectScript.Drop(gameObject);
         m_grabbedObjectScript.Throw(p_strength);
 
