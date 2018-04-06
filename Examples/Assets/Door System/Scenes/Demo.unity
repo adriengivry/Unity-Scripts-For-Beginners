@@ -497,7 +497,7 @@ Prefab:
     - target: {fileID: 114477088162817818, guid: 47d3efee193b5e345b4f55134a73c2f1,
         type: 2}
       propertyPath: m_allowManualInteraction
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114477088162817818, guid: 47d3efee193b5e345b4f55134a73c2f1,
         type: 2}
@@ -1175,6 +1175,36 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387457196120414, guid: f5f539c882c9bbe4aabd02180b157d14,
+        type: 2}
+      propertyPath: m_startVisibility
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387457196120414, guid: f5f539c882c9bbe4aabd02180b157d14,
+        type: 2}
+      propertyPath: m_colorChangingSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387457196120414, guid: f5f539c882c9bbe4aabd02180b157d14,
+        type: 2}
+      propertyPath: m_rotationAnimationSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387457196120414, guid: f5f539c882c9bbe4aabd02180b157d14,
+        type: 2}
+      propertyPath: m_alphaAnimationSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387457196120414, guid: f5f539c882c9bbe4aabd02180b157d14,
+        type: 2}
+      propertyPath: m_colorAnimationSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387457196120414, guid: f5f539c882c9bbe4aabd02180b157d14,
+        type: 2}
+      propertyPath: m_scaleAnimationSpeed
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f5f539c882c9bbe4aabd02180b157d14, type: 2}

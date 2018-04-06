@@ -97,6 +97,11 @@ public class Door : MonoBehaviour
         return Mathf.Abs(m_rotationCoefficient) == 0.0f;
     }
 
+    public bool IsLocked()
+    {
+        return m_locked;
+    }
+
     private void Update()
     {
         if (m_rotationCoefficient != GetRotationCoefficientTarget())

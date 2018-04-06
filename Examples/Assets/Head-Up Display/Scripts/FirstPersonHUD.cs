@@ -23,30 +23,29 @@ public class FirstPersonHUD : MonoBehaviour
 
     private void ListenToEvents()
     {
-        Grabber.CanGrabEvent.AddListener(OnCanGrab);
-        Grabber.CannotGrabEvent.AddListener(OnCannotGrab);
+        Grabber.CanGrabEvent.AddListener(OnCanInteract);
+        Grabber.CannotGrabEvent.AddListener(OnCannotInteract);
+        Grabber.GrabEvent.AddListener(OnInteract);
 
-        DoorInteraction.CanInteractWithDoorEvent.AddListener(OnCanInteractWithDoor);
-        DoorInteraction.CannotInteractWithDoorEvent.AddListener(OnCannotInteractWithDoor);
+        DoorInteraction.CanInteractWithDoorEvent.AddListener(OnCanInteract);
+        DoorInteraction.CannotInteractWithDoorEvent.AddListener(OnCannotInteract);
+        DoorInteraction.InteractWithDoorEvent.AddListener(OnInteract);
     }
 
-    private static void OnCanGrab()
+    private static void OnCanInteract()
     {
-        m_crosshairAnimation.Show(true);
+        m_crosshairAnimation.SetColor(Color.yellow);
+        m_crosshairAnimation.SetRelativeScale(2.0f);
     }
 
-    private static void OnCannotGrab()
+    private static void OnCannotInteract()
     {
-        m_crosshairAnimation.Hide(true);
+        m_crosshairAnimation.ResetColor();
+        m_crosshairAnimation.ResetScale();
     }
 
-    private static void OnCanInteractWithDoor()
+    private static void OnInteract()
     {
-        m_crosshairAnimation.Show(true);
-    }
-
-    private static void OnCannotInteractWithDoor()
-    {
-        m_crosshairAnimation.Hide(true);
+        m_crosshairAnimation.Rotate(180);
     }
 }

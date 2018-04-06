@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.716, b: 0.147, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -98,9 +98,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e3f25489a0009d46800dbda8e8b02ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_startVisibility: 1
-  m_showAndHideSpeed: 10
-  m_rotationSpeed: 5
+  m_startVisibility: 0
+  m_rotationAnimationSpeed: 5
+  m_alphaAnimationSpeed: 5
+  m_colorAnimationSpeed: 5
+  m_scaleAnimationSpeed: 5
 --- !u!114 &114572903242237634
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -172,7 +174,7 @@ RectTransform:
   m_GameObject: {fileID: 1896016816485028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children: []
   m_Father: {fileID: 224998143963291384}
   m_RootOrder: 0

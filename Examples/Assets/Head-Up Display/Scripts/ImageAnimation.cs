@@ -14,76 +14,168 @@ public class ImageAnimation : MonoBehaviour
         HIDE
     }
 
+    struct ImageInfo
+    {
+        public float angle;
+        public Color color;
+        public float alpha;
+        public Vector3 scale;
+    }
+
     [Header("STARTUP PARAMETERS")]
     [SerializeField] private Visibility m_startVisibility;
 
     [Header("ANIMATION PARAMETERS")]
-    [SerializeField] private float m_showAndHideSpeed;
-    [SerializeField] private float m_rotationSpeed;
-    
+    [SerializeField] private float m_rotationAnimationSpeed;
+    [SerializeField] private float m_alphaAnimationSpeed;
+    [SerializeField] private float m_colorAnimationSpeed;
+    [SerializeField] private float m_scaleAnimationSpeed;
 
     private Image m_image;
-    private float m_angle;
-    private float m_newAlpha;
-    
+
+    private ImageInfo m_defaultInfo;
+    private ImageInfo m_toReachInfo;
+
     private void Awake()
     {
         m_image = GetComponent<Image>();
 
         if (m_startVisibility == Visibility.SHOW)
-            Show(false);
+            Show();
         else if (m_startVisibility == Visibility.HIDE)
-            Hide(false);
+            Hide();
 
-        m_angle = transform.eulerAngles.z;
+        m_defaultInfo.angle = transform.eulerAngles.z;
+        m_defaultInfo.color = m_image.color;
+        m_defaultInfo.alpha = m_image.color.a;
+        m_defaultInfo.scale = transform.localScale;
+
+        m_toReachInfo = m_defaultInfo;
     }
 
     private void Update()
     {
         UpdateRotationAnimation();
-        UpdateShowHideAnimation();
+        UpdateAlphaAnimation();
+        UpdateColorAnimation();
+        UpdateScaleAnimation();
     }
 
     private void UpdateRotationAnimation(bool p_end = false)
     {
-        var lerpT = p_end == false ? Time.deltaTime * m_rotationSpeed : 1.0f;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, m_angle), lerpT);
+        var lerpT = p_end == false ? Time.deltaTime * m_rotationAnimationSpeed : 1.0f;
+        var current = transform.rotation;
+        var toReach = Quaternion.Euler(0.0f, 0.0f, m_toReachInfo.angle);
+        transform.rotation = Quaternion.Slerp(current, toReach, lerpT);
     }
 
-    private void UpdateShowHideAnimation(bool p_end = false)
+    private void UpdateAlphaAnimation(bool p_end = false)
     {
-        var lerpT = p_end == false ? Time.deltaTime * m_showAndHideSpeed : 1.0f;
-        m_image.color = new Color(m_image.color.r, m_image.color.g, m_image.color.b, Mathf.Lerp(m_image.color.a, m_newAlpha, lerpT));
+        var lerpT = p_end == false ? Time.deltaTime * m_alphaAnimationSpeed : 1.0f;
+        var current = m_image.color.a;
+        var toReach = m_toReachInfo.alpha;
+        m_image.color = new Color(m_image.color.r, m_image.color.g, m_image.color.b, Mathf.Lerp(current, toReach, lerpT));
     }
 
-    public void Rotate()
+    private void UpdateColorAnimation(bool p_end = false)
     {
-        m_angle += 180.0f;
+        var lerpT = p_end == false ? Time.deltaTime * m_colorAnimationSpeed : 1.0f;
+        var current = m_image.color;
+        var toReach = m_toReachInfo.color;
+        m_image.color = new Color(Mathf.Lerp(current.r, toReach.r, lerpT), Mathf.Lerp(current.g, toReach.g, lerpT), Mathf.Lerp(current.b, toReach.b, lerpT), current.a);
     }
 
-    public void Hide(bool p_animate = false)
+    private void UpdateScaleAnimation(bool p_end = false)
     {
-        ModifyAlpha(0.0f, p_animate);
+        var lerpT = p_end == false ? Time.deltaTime * m_scaleAnimationSpeed : 1.0f;
+        var current = transform.localScale;
+        var toReach = m_toReachInfo.scale;
+        transform.localScale = Vector3.Slerp(current, toReach, lerpT);
     }
 
-    public void Show(bool p_animate = false)
+    public void Show()
     {
-        ModifyAlpha(1.0f, p_animate);
+        m_image.enabled = true;
     }
 
-    public void ModifyAlpha(float p_newValue, bool p_animate = false)
+    public void Hide()
     {
-        m_newAlpha = p_newValue;
-
-        if (!p_animate)
-            UpdateShowHideAnimation(true);
+        m_image.enabled = false;
     }
 
-    public void ModifyRotation(float p_angle, bool p_animate = false)
+    public void Rotate(float p_angle, bool p_animate = true)
     {
-        m_angle = p_angle;
+        m_toReachInfo.angle += p_angle;
 
         if (!p_animate)
             UpdateRotationAnimation(true);
+    }
+
+    public void SetRelativeScale(Vector2 p_scale, bool p_animate = true)
+    {
+        m_toReachInfo.scale.x = m_defaultInfo.scale.x * p_scale.x;
+        m_toReachInfo.scale.y = m_defaultInfo.scale.y * p_scale.y;
+
+        if (!p_animate)
+            UpdateScaleAnimation(true);
+    }
+
+    public void SetRelativeScale(float p_scale, bool p_animate = true)
+    {
+        SetRelativeScale(new Vector2(p_scale, p_scale), p_animate);
+    }
+
+    public void SetScale(Vector2 p_scale, bool p_animate = true)
+    {
+        m_toReachInfo.scale.x = p_scale.x;
+        m_toReachInfo.scale.y = p_scale.y;
+
+        if (!p_animate)
+            UpdateScaleAnimation(true);
+    }
+
+    public void SetScale(float p_scale, bool p_animate = true)
+    {
+        SetScale(new Vector2(p_scale, p_scale), p_animate);
+    }
+
+    public void SetAlpha(float p_alpha, bool p_animate = true)
+    {
+        m_toReachInfo.alpha = p_alpha;
+
+        if (!p_animate)
+            UpdateAlphaAnimation(true);
+    }
+
+    public void SetColor(Color p_color, bool p_animate = true)
+    {
+        m_toReachInfo.color = p_color;
+
+        if (!p_animate)
+            UpdateColorAnimation(true);
+    }
+
+    public void ResetColor(bool p_animate = true)
+    {
+        m_toReachInfo.color = m_defaultInfo.color;
+
+        if (!p_animate)
+            UpdateColorAnimation(true);
+    }
+
+    public void ResetAlpha(bool p_animate = true)
+    {
+        m_toReachInfo.alpha = m_defaultInfo.alpha;
+
+        if (!p_animate)
+            UpdateAlphaAnimation(true);
+    }
+
+    public void ResetScale(bool p_animate = true)
+    {
+        m_toReachInfo.scale = m_defaultInfo.scale;
+
+        if (!p_animate)
+            UpdateColorAnimation(true);
     }
 }
