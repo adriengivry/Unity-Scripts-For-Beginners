@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 54850125244752152}
   - component: {fileID: 136048856146140188}
   - component: {fileID: 114823411972500582}
+  - component: {fileID: 114868818072290118}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -150,6 +151,17 @@ MonoBehaviour:
   m_verticalAxisInput: Vertical
   m_horizontalAxisInput: Horizontal
   m_upAxisInput: Up
+--- !u!114 &114868818072290118
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1353510569841908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e4d8478a8d60d44b286c86e8770f3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114960998131150402
 MonoBehaviour:
   m_ObjectHideFlags: 1

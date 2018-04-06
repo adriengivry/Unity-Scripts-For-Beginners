@@ -12,6 +12,7 @@ public class Grabber : MonoBehaviour
     public static UnityEvent GrabEvent = new UnityEvent();
     public static UnityEvent DropEvent = new UnityEvent();
     public static UnityEvent ThrowEvent = new UnityEvent();
+    public static UnityEvent IsGrabbingEvent = new UnityEvent();
 
     [Header("INPUT BINDING")]
     [SerializeField] private string m_grabInput;
@@ -35,24 +36,55 @@ public class Grabber : MonoBehaviour
     private Vector3 m_objectVelocity;
     private Vector3 m_objectAngularVelocity;
 
+    private bool m_grabbedDuringThisFrame;
+
+    private void Awake()
+    {
+        GetComponent<Detector>().DetectionEvent.AddListener(OnDetection);
+    }
+
     private void Update()
+    {
+        if (m_grabbedObject != null)
+        {
+            IsGrabbingEvent.Invoke();
+            UpdateGrabbedObject();
+
+            if (!m_grabbedDuringThisFrame)
+            {
+                if (Input.GetButtonDown(m_dropInput))
+                    ThrowObject(0);
+                else if (Input.GetButtonDown(m_throwInput))
+                    ThrowObject(m_throwStrength);
+            }
+        }
+
+        m_grabbedDuringThisFrame = false;
+    }
+
+    private void OnDetection(GameObject p_detected)
     {
         if (m_grabbedObject == null)
         {
-            GameObject toGrab;
-            if (CheckIfCanGrab(out toGrab))
-                if (Input.GetButtonDown(m_grabInput))
-                    GrabObject(toGrab);
-        }
-        else
-        {
-            UpdateGrabbedObject();
+            Grabbable p_grabbable = p_detected.GetComponent<Grabbable>();
 
-            if (Input.GetButtonDown(m_dropInput))
-                ThrowObject(0);
-            else if (Input.GetButtonDown(m_throwInput))
-                ThrowObject(m_throwStrength);
-        }            
+            if (p_grabbable != null)
+            {
+                Collider gameObjectCollider = p_detected.GetComponent<Collider>();
+                Vector3 cameraPosition = Camera.main.transform.position;
+                Vector3 gameObjectHitClosestPoint = gameObjectCollider.ClosestPointOnBounds(cameraPosition);
+
+                if (Vector3.Distance(cameraPosition, gameObjectHitClosestPoint) <= m_minimumDistanceToGrab)
+                {
+                    CanGrabEvent.Invoke();
+
+                    if (Input.GetButtonDown(m_grabInput))
+                    {
+                        GrabObject(p_detected);
+                    }
+                }
+            }
+        }
     }
 
     private void UpdateGrabbedObject()
@@ -74,31 +106,7 @@ public class Grabber : MonoBehaviour
 
         m_grabbedObjectScript.Grab(gameObject);
         m_distanceBetweenObjectAndCameraDueToMeshSize = m_grabbedObjectScript.CalculateDistanceToCameraOffset();
-    }
-
-    private bool CheckIfCanGrab(out GameObject p_grabbableFound)
-    {
-        p_grabbableFound = null;
-
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit))
-        {
-            GameObject gameObjectHit = hit.transform.gameObject;
-            Grabbable grabbedObjectScript = gameObjectHit.GetComponent<Grabbable>();
-            if (grabbedObjectScript != null && hit.distance <= m_minimumDistanceToGrab)
-            {
-                p_grabbableFound = gameObjectHit;
-            }
-        }
-
-        if (p_grabbableFound != null)
-        {
-            CanGrabEvent.Invoke();
-            return true;
-        }
-        return false;
+        m_grabbedDuringThisFrame = true;
     }
 
     private void ThrowObject(float p_strength)

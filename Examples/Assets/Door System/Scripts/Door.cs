@@ -153,6 +153,6 @@ public class Door : MonoBehaviour
 
     public bool CanInteractWith()
     {
-        return m_allowManualInteraction;
+        return m_allowManualInteraction && !m_locked;
     }
 }

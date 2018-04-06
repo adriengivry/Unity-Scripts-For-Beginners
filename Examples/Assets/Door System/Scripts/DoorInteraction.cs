@@ -17,62 +17,38 @@ public class DoorInteraction : MonoBehaviour
     [SerializeField] private string m_interactInput;
     [SerializeField] private float m_minimumDistanceToOpen;
 
-    private Door m_toInteractWith;
-
-    private void Update()
+    private void Awake()
     {
-        if (CheckIfCanInteract(out m_toInteractWith))
-        {
-            if (Input.GetButtonDown(m_interactInput))
-            {
-                InteractWithDoorEvent.Invoke();
-                m_toInteractWith.Interact(gameObject);
-            }
-        }
+        GetComponent<Detector>().DetectionEvent.AddListener(OnDetection);
     }
 
-    private bool CheckIfCanInteract(out Door p_door)
+    private void OnDetection(GameObject p_detected)
     {
-        p_door = null;
+        Door attachedDoor = p_detected.GetComponentInParent<Door>();
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        var hits = Physics.RaycastAll(ray);
-
-        foreach (var hit in hits)
+        if (attachedDoor != null)
         {
-            GameObject gameObjectHit = hit.transform.gameObject;
-            Collider gameObjectCollider = gameObjectHit.GetComponent<Collider>();
+            Collider gameObjectCollider = p_detected.GetComponent<Collider>();
             Vector3 cameraPosition = Camera.main.transform.position;
             Vector3 gameObjectHitClosestPoint = gameObjectCollider.ClosestPointOnBounds(cameraPosition);
-            float distanceBetweenCameraAndObject = Vector3.Distance(cameraPosition, gameObjectHitClosestPoint);
 
-            if (distanceBetweenCameraAndObject <= m_minimumDistanceToOpen)
+            if (Vector3.Distance(cameraPosition, gameObjectHitClosestPoint) <= m_minimumDistanceToOpen)
             {
-                Door attachedDoor = gameObjectHit.GetComponentInParent<Door>();
-
-                if (attachedDoor && attachedDoor.CanInteractWith())
+                if (attachedDoor.CanInteractWith())
                 {
-                    p_door = attachedDoor;
-                    break;
+                    CanInteractWithDoorEvent.Invoke();
+                    if (Input.GetButtonDown(m_interactInput))
+                    {
+                        InteractWithDoorEvent.Invoke();
+                        attachedDoor.Interact(gameObject);
+                    }
+                }
+                else
+                {
+                    CannotInteractWithDoorEvent.Invoke();
                 }
             }
         }
-
-        if (p_door != null)
-        {
-            if (!p_door.IsLocked())
-            {
-                CanInteractWithDoorEvent.Invoke();
-                return true;
-            }
-            else
-            {
-                CannotInteractWithDoorEvent.Invoke();
-                return false;
-            }
-        }
-            
-        return false;
     }
 
     public bool CanUseTriggers()

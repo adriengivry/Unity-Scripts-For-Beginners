@@ -11,8 +11,9 @@ public class FirstPersonHUD : MonoBehaviour
     private enum InteractionState
     {
         CAN,
-        NEUTRAL,
-        CANNOT
+        CANNOT,
+        IS,
+        NEUTRAL
     }
 
     [Header("LINKED GAMEOBJECTS")]
@@ -30,17 +31,13 @@ public class FirstPersonHUD : MonoBehaviour
             m_crosshairAnimation = m_crosshairPrefab.GetComponent<ImageAnimation>();
     }
 
-    private void Update()
-    {
-        m_interactionState = InteractionState.NEUTRAL;
-    }
-
     private void ListenToEvents()
     {
         Grabber.CanGrabEvent.AddListener(OnCanInteract);
         Grabber.GrabEvent.AddListener(OnInteract);
         Grabber.DropEvent.AddListener(OnInteract);
         Grabber.ThrowEvent.AddListener(OnInteract);
+        Grabber.IsGrabbingEvent.AddListener(OnIsInteracting);
 
         DoorInteraction.CanInteractWithDoorEvent.AddListener(OnCanInteract);
         DoorInteraction.CannotInteractWithDoorEvent.AddListener(OnCannotInteract);
@@ -57,6 +54,11 @@ public class FirstPersonHUD : MonoBehaviour
         m_interactionState = InteractionState.CANNOT;
     }
 
+    private static void OnIsInteracting()
+    {
+        m_interactionState = InteractionState.IS;
+    }
+
     private static void OnInteract()
     {
         m_crosshairAnimation.Rotate(180);
@@ -67,19 +69,28 @@ public class FirstPersonHUD : MonoBehaviour
         switch (m_interactionState)
         {
             case InteractionState.CAN:
+                m_crosshairAnimation.ResetAlpha();
                 m_crosshairAnimation.SetColor(Color.yellow);
                 m_crosshairAnimation.SetRelativeScale(2.0f);
                 break;
 
-            case InteractionState.NEUTRAL:
-                m_crosshairAnimation.ResetColor();
-                m_crosshairAnimation.ResetScale();
-                break;
-
             case InteractionState.CANNOT:
+                m_crosshairAnimation.ResetAlpha();
                 m_crosshairAnimation.SetColor(Color.red);
                 m_crosshairAnimation.ResetScale();
                 break;
+
+            case InteractionState.IS:
+                m_crosshairAnimation.SetAlpha(0.0f);
+                break;
+
+            case InteractionState.NEUTRAL:
+                m_crosshairAnimation.ResetAlpha();
+                m_crosshairAnimation.ResetColor();
+                m_crosshairAnimation.ResetScale();
+                break;
         }
+
+        m_interactionState = InteractionState.NEUTRAL;
     }
 }
