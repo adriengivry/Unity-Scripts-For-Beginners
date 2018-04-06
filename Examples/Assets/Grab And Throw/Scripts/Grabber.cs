@@ -9,7 +9,6 @@ using UnityEngine.Events;
 public class Grabber : MonoBehaviour
 {
     public static UnityEvent CanGrabEvent = new UnityEvent();
-    public static UnityEvent CannotGrabEvent = new UnityEvent();
     public static UnityEvent GrabEvent = new UnityEvent();
     public static UnityEvent DropEvent = new UnityEvent();
     public static UnityEvent ThrowEvent = new UnityEvent();
@@ -99,8 +98,6 @@ public class Grabber : MonoBehaviour
             CanGrabEvent.Invoke();
             return true;
         }
-
-        CannotGrabEvent.Invoke();
         return false;
     }
 

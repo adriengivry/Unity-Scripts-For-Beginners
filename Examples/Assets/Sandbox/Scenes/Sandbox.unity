@@ -228,6 +228,7 @@ Transform:
   - {fileID: 17129699}
   - {fileID: 1858440440}
   - {fileID: 1135967336}
+  - {fileID: 830667258}
   m_Father: {fileID: 1155718121}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -566,6 +567,67 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f12fccb0d01d39346a08bc5ab84c9684, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &830667257
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 44002440}
+    m_Modifications:
+    - target: {fileID: 4362051220525166, guid: 47d3efee193b5e345b4f55134a73c2f1, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 7.467
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362051220525166, guid: 47d3efee193b5e345b4f55134a73c2f1, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 5.2872167
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362051220525166, guid: 47d3efee193b5e345b4f55134a73c2f1, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -8.139
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362051220525166, guid: 47d3efee193b5e345b4f55134a73c2f1, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362051220525166, guid: 47d3efee193b5e345b4f55134a73c2f1, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362051220525166, guid: 47d3efee193b5e345b4f55134a73c2f1, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362051220525166, guid: 47d3efee193b5e345b4f55134a73c2f1, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362051220525166, guid: 47d3efee193b5e345b4f55134a73c2f1, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114477088162817818, guid: 47d3efee193b5e345b4f55134a73c2f1,
+        type: 2}
+      propertyPath: m_allowManualInteraction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1518906287706660, guid: 47d3efee193b5e345b4f55134a73c2f1, type: 2}
+      propertyPath: m_Name
+      value: LockedDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 114477088162817818, guid: 47d3efee193b5e345b4f55134a73c2f1,
+        type: 2}
+      propertyPath: m_locked
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 47d3efee193b5e345b4f55134a73c2f1, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &830667258 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4362051220525166, guid: 47d3efee193b5e345b4f55134a73c2f1,
+    type: 2}
+  m_PrefabInternal: {fileID: 830667257}
 --- !u!4 &873610221 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4930176093984206, guid: f12fccb0d01d39346a08bc5ab84c9684,

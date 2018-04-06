@@ -58,13 +58,19 @@ public class DoorInteraction : MonoBehaviour
             }
         }
 
-        if (p_door != null && !p_door.IsLocked())
+        if (p_door != null)
         {
-            CanInteractWithDoorEvent.Invoke();
-            return true;
+            if (!p_door.IsLocked())
+            {
+                CanInteractWithDoorEvent.Invoke();
+                return true;
+            }
+            else
+            {
+                CannotInteractWithDoorEvent.Invoke();
+                return false;
+            }
         }
-
-        CannotInteractWithDoorEvent.Invoke();
             
         return false;
     }

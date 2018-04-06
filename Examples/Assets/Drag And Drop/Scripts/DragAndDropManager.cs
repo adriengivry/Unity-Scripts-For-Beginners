@@ -64,7 +64,6 @@ public class DragAndDropManager : MonoBehaviour
             }
         }
 
-        CannotDragEvent.Invoke();
         return false;
     }
 }

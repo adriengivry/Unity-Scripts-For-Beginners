@@ -19,6 +19,7 @@ public class Door : MonoBehaviour
     [Header("DOOR ACTIVATION PARAMETERS")]
     [SerializeField] private bool m_allowManualInteraction;
     [SerializeField] private DoorState m_startState;
+    [SerializeField] private bool m_locked;
 
     private Transform m_pivot;
     private GameObject m_player;
@@ -28,18 +29,15 @@ public class Door : MonoBehaviour
     private float m_timer;
     private float m_rotationCoefficient;
 
-    private bool m_locked;
-
     private void Awake()
     {
         m_pivot = transform.Find("Pivot");
         m_initialPivotRotation = m_pivot.rotation.eulerAngles;
-        m_locked = false;
 
         if (m_startState == DoorState.OPEN)
-            Open(Camera.main.gameObject);
+            Open(Camera.main.gameObject, true);
         else if (m_startState == DoorState.CLOSE)
-            Close(gameObject);
+            Close(gameObject, true);
     }
 
     public void Open(GameObject p_activator = null, bool p_ignoreLock = false)

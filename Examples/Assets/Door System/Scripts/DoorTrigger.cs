@@ -14,7 +14,8 @@ public class DoorTrigger : MonoBehaviour
     private enum DoorAction
     {
         OPEN,
-        CLOSE
+        CLOSE,
+        NONE
     }
 
     [Header("LINKED DOORS")]
@@ -25,12 +26,9 @@ public class DoorTrigger : MonoBehaviour
     [SerializeField] private DoorAction m_onTriggerExit;
 
     [Header("PROPERTIES")]
-    [SerializeField] private bool m_canOpen;
-    [SerializeField] private bool m_canClose;
     [SerializeField] private bool m_lockOnOpen;
     [SerializeField] private bool m_lockOnClose;
-    [SerializeField] private bool m_ignoreLockOnOpen;
-    [SerializeField] private bool m_ignoreLockOnClose;
+    [SerializeField] private bool m_ignoreLock;
 
     private Collider m_collider;
 
@@ -74,13 +72,10 @@ public class DoorTrigger : MonoBehaviour
         {
             foreach (var door in m_linkedDoors)
             {
-                if (m_canOpen)
-                {
-                    door.Open(p_activator, m_ignoreLockOnOpen);
+                door.Open(p_activator, m_ignoreLock);
 
-                    if (m_lockOnOpen)
-                        door.Lock();
-                }
+                if (m_lockOnOpen)
+                    door.Lock();
             }
         }
     }
@@ -93,13 +88,10 @@ public class DoorTrigger : MonoBehaviour
         {
             foreach (var door in m_linkedDoors)
             {
-                if (m_canClose)
-                {
-                    door.Close(p_activator, m_ignoreLockOnClose);
+                door.Close(p_activator, m_ignoreLock);
 
-                    if (m_lockOnClose)
-                        door.Lock();
-                }
+                if (m_lockOnClose)
+                    door.Lock();
             }
         }
     }
