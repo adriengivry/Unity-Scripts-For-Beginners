@@ -14,12 +14,16 @@ public class DoorInteraction : MonoBehaviour
 
     [Header("DOOR INTERACTION PARAMETERS")]
     [SerializeField] private bool m_canUseTriggers;
+    [SerializeField] private bool m_isAbleToManuallyInteract;
     [SerializeField] private string m_interactInput;
     [SerializeField] private float m_minimumDistanceToOpen;
 
     private void Awake()
     {
-        GetComponent<Detector>().DetectionEvent.AddListener(OnDetection);
+        if (m_isAbleToManuallyInteract)
+        {
+            GetComponent<Detector>().DetectionEvent.AddListener(OnDetection);
+        }
     }
 
     private void OnDetection(GameObject p_detected)

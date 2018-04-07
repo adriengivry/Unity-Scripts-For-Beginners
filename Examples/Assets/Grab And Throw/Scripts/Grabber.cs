@@ -48,12 +48,13 @@ public class Grabber : MonoBehaviour
         if (m_grabbedObject != null)
         {
             IsGrabbingEvent.Invoke();
+
             UpdateGrabbedObject();
 
             if (!m_grabbedDuringThisFrame)
             {
                 if (Input.GetButtonDown(m_dropInput))
-                    ThrowObject(0);
+                    DropObject();
                 else if (Input.GetButtonDown(m_throwInput))
                     ThrowObject(m_throwStrength);
             }
@@ -91,11 +92,14 @@ public class Grabber : MonoBehaviour
     {
         var currentPosition = m_grabbedObject.transform.position;
         var targetedPosition = Camera.main.transform.position + Camera.main.transform.forward * (m_distanceBetweenObjectAndCamera + m_distanceBetweenObjectAndCameraDueToMeshSize);
-        m_grabbedObject.transform.position = Vector3.Lerp(currentPosition, targetedPosition, m_objectPositionSmoothing);
+        m_grabbedObject.transform.position = Vector3.MoveTowards(currentPosition, targetedPosition, m_objectPositionSmoothing);
 
         var currentRotation = m_grabbedObject.transform.rotation;
         var targetedRotation = transform.rotation;
         m_grabbedObject.transform.rotation = Quaternion.Slerp(currentRotation, targetedRotation, m_objectRotationSmoothing);
+
+        if (m_grabbedObjectScript.IsLinkedLost())
+            DropObject();
     }
 
     private void GrabObject(GameObject p_toGrab)
@@ -107,6 +111,11 @@ public class Grabber : MonoBehaviour
         m_grabbedObjectScript.Grab(gameObject);
         m_distanceBetweenObjectAndCameraDueToMeshSize = m_grabbedObjectScript.CalculateDistanceToCameraOffset();
         m_grabbedDuringThisFrame = true;
+    }
+
+    private void DropObject()
+    {
+        ThrowObject(0);
     }
 
     private void ThrowObject(float p_strength)

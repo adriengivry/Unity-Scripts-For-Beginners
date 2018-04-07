@@ -14,6 +14,9 @@ public class Grabbable : MonoBehaviour
 
     private bool m_wasKinematic;
     private bool m_wasColliderEnabled;
+    private bool m_wasUsingGravity;
+
+    private bool m_linkedToGrabber;
 
     private Rigidbody m_rigidbody;
     private Collider m_collider;
@@ -26,10 +29,13 @@ public class Grabbable : MonoBehaviour
 
     public void Grab(GameObject p_grabber)
     {
+        m_linkedToGrabber = true;
         m_wasKinematic = m_rigidbody.isKinematic;
         m_wasColliderEnabled = m_collider.enabled;
+        m_wasUsingGravity = m_rigidbody.useGravity;
 
         m_rigidbody.isKinematic = m_kinematic;
+        m_rigidbody.useGravity = false;
         m_collider.enabled = m_colliderEnabled;
 
         Physics.IgnoreCollision(m_collider, p_grabber.GetComponent<Collider>(), true);
@@ -39,6 +45,7 @@ public class Grabbable : MonoBehaviour
     {
         m_rigidbody.isKinematic = m_wasKinematic;
         m_collider.enabled = m_wasColliderEnabled;
+        m_rigidbody.useGravity = m_wasUsingGravity;
 
         Physics.IgnoreCollision(m_collider, p_dropper.GetComponent<Collider>(), false);
     }
@@ -52,5 +59,15 @@ public class Grabbable : MonoBehaviour
     public float CalculateDistanceToCameraOffset()
     {
         return GetComponent<MeshFilter>().mesh.bounds.size.z * transform.localScale.z;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        m_linkedToGrabber = false;
+    }
+
+    public bool IsLinkedLost()
+    {
+        return !m_linkedToGrabber;
     }
 }

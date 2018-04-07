@@ -155,6 +155,22 @@ public class ImageAnimation : MonoBehaviour
             UpdateColorAnimation(true);
     }
 
+    public void Reset()
+    {
+        ResetRotationAngle();
+        ResetColor();
+        ResetAlpha();
+        ResetScale();
+    }
+
+    public void ResetRotationAngle(bool p_animate = true)
+    {
+        m_toReachInfo.angle = m_defaultInfo.angle;
+
+        if (!p_animate)
+            UpdateColorAnimation(true);
+    }
+
     public void ResetColor(bool p_animate = true)
     {
         m_toReachInfo.color = m_defaultInfo.color;

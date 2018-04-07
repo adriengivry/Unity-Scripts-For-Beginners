@@ -4,23 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
- * Script that handle In-game user interface. It will listen to events sent by MonoBehaviours and will start animate, rotate, the crosshair
+ * Script that handle in-game user interface. It will listen to events sent by MonoBehaviours and will start animate, rotate, the crosshair
  */ 
 public class FirstPersonHUD : MonoBehaviour
 {
     private enum InteractionState
     {
+        NEUTRAL,
+        IS,
         CAN,
         CANNOT,
-        IS,
-        NEUTRAL
     }
 
     [Header("LINKED GAMEOBJECTS")]
     [SerializeField] private GameObject m_crosshairPrefab;
 
     private static ImageAnimation m_crosshairAnimation;
-
     private static InteractionState m_interactionState;
 
     private void Awake()
@@ -44,19 +43,39 @@ public class FirstPersonHUD : MonoBehaviour
         DoorInteraction.InteractWithDoorEvent.AddListener(OnInteract);
     }
 
+    private static uint GetPriority(InteractionState p_state)
+    {
+        switch (p_state)
+        {
+            default:
+            case InteractionState.NEUTRAL:  return 0;
+            case InteractionState.IS:       return 1;
+            case InteractionState.CAN:      return 2;
+            case InteractionState.CANNOT:   return 2;
+        }
+    }
+
+    private static void SetInteractionState(InteractionState p_newState)
+    { 
+        if (GetPriority(p_newState) > GetPriority(m_interactionState))
+        {
+            m_interactionState = p_newState;
+        }
+    }
+
     private static void OnCanInteract()
     {
-        m_interactionState = InteractionState.CAN;
+        SetInteractionState(InteractionState.CAN);
     }
 
     private static void OnCannotInteract()
     {
-        m_interactionState = InteractionState.CANNOT;
+        SetInteractionState(InteractionState.CANNOT);
     }
 
     private static void OnIsInteracting()
     {
-        m_interactionState = InteractionState.IS;
+        SetInteractionState(InteractionState.IS);
     }
 
     private static void OnInteract()
@@ -68,6 +87,16 @@ public class FirstPersonHUD : MonoBehaviour
     {
         switch (m_interactionState)
         {
+            case InteractionState.NEUTRAL:
+                m_crosshairAnimation.ResetColor();
+                m_crosshairAnimation.ResetScale();
+                m_crosshairAnimation.ResetAlpha();
+                break;
+
+            case InteractionState.IS:
+                m_crosshairAnimation.SetAlpha(0.0f);
+                break;
+
             case InteractionState.CAN:
                 m_crosshairAnimation.ResetAlpha();
                 m_crosshairAnimation.SetColor(Color.yellow);
@@ -77,16 +106,6 @@ public class FirstPersonHUD : MonoBehaviour
             case InteractionState.CANNOT:
                 m_crosshairAnimation.ResetAlpha();
                 m_crosshairAnimation.SetColor(Color.red);
-                m_crosshairAnimation.ResetScale();
-                break;
-
-            case InteractionState.IS:
-                m_crosshairAnimation.SetAlpha(0.0f);
-                break;
-
-            case InteractionState.NEUTRAL:
-                m_crosshairAnimation.ResetAlpha();
-                m_crosshairAnimation.ResetColor();
                 m_crosshairAnimation.ResetScale();
                 break;
         }

@@ -12,21 +12,10 @@ public class Detector : MonoBehaviour
 
     private void Update()
     {
-        
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        var hits = Physics.RaycastAll(ray, 100);
-
-        foreach (var hit in hits)
-        {
-            DetectionEvent.Invoke(hit.transform.gameObject);
-        }
-        
-        /*
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             DetectionEvent.Invoke(hit.transform.gameObject);
-        */
     }
 }

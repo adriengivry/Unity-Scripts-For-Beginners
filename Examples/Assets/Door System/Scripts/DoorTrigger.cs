@@ -68,7 +68,7 @@ public class DoorTrigger : MonoBehaviour
     {
         var doorInteractionScript = p_activator.GetComponent<DoorInteraction>();
 
-        if (doorInteractionScript.CanUseTriggers())
+        if (doorInteractionScript && doorInteractionScript.CanUseTriggers())
         {
             foreach (var door in m_linkedDoors)
             {
